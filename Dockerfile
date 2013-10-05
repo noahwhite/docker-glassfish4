@@ -1,9 +1,13 @@
 # Glassfish4 + Oracle JDK 1.7.0_40 
 #
-# VERSION               0.0.2
+# VERSION               0.0.4
 
 FROM      base
 MAINTAINER Noah White "noah@noahwhite.net"
+
+# ADD A HOSTS FILE WITH A HOSTNAME FOR 127.0.0.1 - CHANGE THIS NAME (CARGOBOX) TO MEET YOUR NEEDS
+ADD etc/hosts /etc/hosts
+RUN chmod 600 /etc/hosts
 
 RUN apt-get update
 
@@ -25,22 +29,6 @@ ENV GF_HOME /usr/local/glassfish4
 
 ENV PATH $PATH:$JAVA_HOME/bin:$GF_HOME/bin
 
+# PORT FORWARD THE ADMIN PORT, HTTP LISTENER-1 PORT, HTTPS LISTENER PORT, PURE JMX CLIENTS PORT, MESSAGE QUEUE PORT, IIOP PORT, IIOP/SSL PORT, IIOP/SSL PORT WITH MUTUAL AUTHENTICATION
 EXPOSE 4848 8080 8181 8686 7676 3700 3820 3920
 
-# CHANGE MASTER PASSWORD
-# asadmin --interactive=false --passwordfile change_master_pwdfile change-master-password
-
-# START DOMAIN
-# asadmin --passwordfile=domain_pwdfile start-domain
-
-# CHANGE ADMIN PASSWORD
-# asadmin --user admin --interactive=false --passwordfile change_admin_pwdfile change-admin-password
-
-# ENABLE SECURE ADMIN
-# asadmin -u admin --passwordfile admin_pwdfile --host localhost --port 4848 enable-secure-admin
-
-# RESTART DOMAIN
-# asadmin -u admin --passwordfile admin_pwdfile restart-domain
-
-# CMD ["-u", "admin", "--passwordfile", "/usr/local/glassfish4/glassfish/domains/domain1/config/admin_pwdfile", "start-domain"]
-# ENTRYPOINT ["/usr/local/glassfish4/bin/asadmin"]
