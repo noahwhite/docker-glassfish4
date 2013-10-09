@@ -5,9 +5,8 @@
 FROM      base
 MAINTAINER Noah White "noah@noahwhite.net"
 
-# ADD A HOSTS FILE WITH A HOSTNAME FOR 127.0.0.1 - CHANGE THIS NAME (CARGOBOX) TO MEET YOUR NEEDS
-ADD etc/hosts /etc/hosts
-RUN chmod 600 /etc/hosts
+ADD start-gf.sh /usr/local/bin/start-gf.sh
+RUN chmod 755 /usr/local/bin/start-gf.sh
 
 RUN apt-get update
 
@@ -31,4 +30,6 @@ ENV PATH $PATH:$JAVA_HOME/bin:$GF_HOME/bin
 
 # PORT FORWARD THE ADMIN PORT, HTTP LISTENER-1 PORT, HTTPS LISTENER PORT, PURE JMX CLIENTS PORT, MESSAGE QUEUE PORT, IIOP PORT, IIOP/SSL PORT, IIOP/SSL PORT WITH MUTUAL AUTHENTICATION
 EXPOSE 4848 8080 8181 8686 7676 3700 3820 3920
+
+CMD /usr/local/bin/start-gf.sh
 
